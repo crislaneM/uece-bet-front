@@ -2,14 +2,8 @@
 import React, { useState } from 'react';
 import StdInput from '../Util/StdInput';
 import StdBtn from '../Util/StdBtn';
+import StdTitle from '../Util/Title';
 import styled from 'styled-components';
-import { ReactComponent as Logo } from '../../jogador-de-futebol 4.svg';
-
-const Row = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 
 const LinksRow = styled.div`
   display: flex;
@@ -17,26 +11,23 @@ const LinksRow = styled.div`
   font-size: medium;
 `;
 
-const LogoTitle = styled(Logo)`
-  height: 50px;
-  margin: -15px;
-`
 const Login = () => {
   const [uesername, setuesername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
     // Lógica de autenticação aqui
-    console.log(`uesername: ${uesername}, Senha: ${password}`);
+    const formData  = {
+        username: uesername,
+        password:password,
+    }
+    console.log(formData);
   };
 
   return (
     <div>
-      <Row class="title">
-        <h2>uece.</h2>
-        <h2 style={{color:"#F2CE1B"}}>bet</h2>
-        <LogoTitle></LogoTitle>
-      </Row>
+      
+      <StdTitle></StdTitle>
       <form>
         <StdInput
           label="Usuário"
