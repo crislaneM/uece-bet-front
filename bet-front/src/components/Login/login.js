@@ -1,5 +1,6 @@
-// src/components/Login.js
+// Login.js
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import StdInput from '../Util/StdInput';
 import StdBtn from '../Util/StdBtn';
 import StdTitle from '../Util/Title';
@@ -12,27 +13,26 @@ const LinksRow = styled.div`
 `;
 
 const Login = () => {
-  const [uesername, setuesername] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Lógica de autenticação aqui
-    const formData  = {
-        username: uesername,
-        password:password,
-    }
+    // Authentication logic here
+    const formData = {
+      username,
+      password,
+    };
     console.log(formData);
   };
 
   return (
     <div>
-      
-      <StdTitle></StdTitle>
+      <StdTitle />
       <form>
         <StdInput
           label="Usuário"
-          value={uesername}
-          onChange={(e) => setuesername(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
         <StdInput
           label="Senha"
@@ -43,8 +43,8 @@ const Login = () => {
         <StdBtn label="Entrar" onClick={handleLogin} />
       </form>
       <LinksRow>
-        <a href='./login.js' style={{color:"white"}} >Cadastre-se</a>
-        <a href='./login.js' style={{color:"white"}} >Esqueci  a senha</a> 
+        <Link to="/cadastro" style={{ color: "white" }}>Cadastre-se</Link>
+        <Link to="/esqueci-senha" style={{ color: "white" }}>Esqueci a senha</Link>
       </LinksRow>
     </div>
   );
