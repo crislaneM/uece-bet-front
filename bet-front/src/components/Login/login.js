@@ -19,8 +19,8 @@ const Login = () => {
   const handleLogin = () => {
     // Authentication logic here
     const formData = {
-      username,
-      password,
+      username: username,
+      password: password,
     };
     console.log(formData);
   };
@@ -44,7 +44,7 @@ const Login = () => {
       </form>
       <LinksRow>
         <Link to="/cadastro" style={{ color: "white" }}>Cadastre-se</Link>
-        <Link to="/esqueci-senha" style={{ color: "white" }}>Esqueci a senha</Link>
+        <Link to="/recuperarSenha" style={{ color: "white" }}>Esqueci a senha</Link>
       </LinksRow>
     </div>
   );
