@@ -6,12 +6,12 @@ const StdButton= styled.button`
   background-color: #00A1E4;
   color: white;
   padding: 10px 15px;
-  width: 165px;
-  height: 35px;
+  width: 100px;
   border: none;
   border-radius: 20px;
   cursor: pointer;
-  margin-bottom: 20px;
+  margin-bottom: ${(props) => props.mgBottom || '0px'};
+  font-size: ${(props) => props.fontSize || 'large'};
 
   &:hover {
     background-color: white;

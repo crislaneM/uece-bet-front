@@ -40,7 +40,7 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <StdBtn label="Entrar" onClick={handleLogin} />
+        <StdBtn label="Entrar" onClick={handleLogin} mgBotton={'20px'} />
       </form>
       <LinksRow>
         <Link to="/cadastro" style={{ color: "white" }}>Cadastre-se</Link>
