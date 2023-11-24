@@ -15,7 +15,7 @@ const LogoTitle = styled(Logo)`
 
 const StdTitle = ({ logoSize }) => (
   <Row className="title">
-    <h2>uece.</h2>
+    <h2 style={{ color: "#FFF" }}>uece.</h2>
     <h2 style={{ color: "#F2CE1B" }}>bet</h2>
     <LogoTitle size={logoSize} />
   </Row>

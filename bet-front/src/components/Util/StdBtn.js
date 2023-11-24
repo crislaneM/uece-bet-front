@@ -19,8 +19,8 @@ const StdButton= styled.button`
   }
 `;
 
-const StdBtn = ({ label, onClick }) => (
-  <StdButton type="" onClick={onClick}>
+const StdBtn = ({ label, onClick, mgBottom, fontSize }) => (
+  <StdButton type="" mgBottom={ mgBottom} fontSize={fontSize} onClick={onClick}>
     {label}
   </StdButton>
 );
