@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row';
 function ImpCard() {
   return (
     <>
-    <Card style={{ width: '50rem', height: '8rem' }}  className='card-color'>
+    <Card style={{ width: '50rem', height: '8rem' }}  className='imp-card-color'>
       <Card.Body>
         <Container className='card-container imp-card-container'>
             <Row className='imp-card-row'>
@@ -43,7 +43,7 @@ function ImpCard() {
     <style type="text/css">
             {`
 
-                .card-color {
+                .imp-card-color {
                     background-color: #192B41;
                     color: white;
                 }
