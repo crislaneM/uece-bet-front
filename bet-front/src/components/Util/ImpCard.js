@@ -1,14 +1,16 @@
-import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
-import Image from 'react-bootstrap/Image';
-import Row from 'react-bootstrap/Row';
+import React, { useState } from 'react';
+import { Modal, Button, Card, Container, Row, Col, Image, ListGroup } from 'react-bootstrap';
 
 
 function ImpCard() {
+    const [showModal, setShowModal] = useState(false);
+
+    const handleModalOpen = () => setShowModal(true);
+    const handleModalClose = () => setShowModal(false);
+
   return (
     <>
-    <Card style={{ width: '50rem', height: '8rem' }}  className='imp-card-color'>
+    <Card style={{ width: '50rem', height: '8rem' }}  className='imp-card-color'  onClick={handleModalOpen}>
       <Card.Body>
         <Container className='card-container imp-card-container'>
             <Row className='imp-card-row'>
@@ -19,7 +21,7 @@ function ImpCard() {
                             <Card.Text>0.0</Card.Text>
                         </Col>
                         <Col xs={6} md={4}>
-                            <h5 className="draw">X</h5>
+                            <h5 className="imp-draw">X</h5>
                             <Card.Text>0.0</Card.Text>
                         </Col>
                         <Col xs={6} md={4}>
@@ -40,12 +42,37 @@ function ImpCard() {
          </Container>
       </Card.Body>
     </Card>
+    <Modal className="stdModal" show={showModal} onHide={handleModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Apostar em : Time 1 X Time 2 </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <ListGroup horizontal>
+                    <ListGroup.Item>Vitória do Time 1</ListGroup.Item>
+                    <ListGroup.Item>Empate</ListGroup.Item>
+                    <ListGroup.Item>Vitória do Time 2</ListGroup.Item>
+            </ListGroup>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleModalClose}>
+            Fechar
+          </Button>
+          <Button variant="primary" onClick={handleModalClose}>
+            Apostar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     <style type="text/css">
             {`
 
                 .imp-card-color {
                     background-color: #192B41;
                     color: white;
+                    cursor: pointer;
+                }
+
+                .imp-card-color:hover{
+                    border: solid 1px #F2CE1B;
                 }
 
                 .card-container{
@@ -58,7 +85,7 @@ function ImpCard() {
                     max-width:50px;
                 }
 
-                .draw{
+                .imp-draw{
                     margin-bottom: 5px;
                 }
 
@@ -74,6 +101,19 @@ function ImpCard() {
                     font-size: medium;
                     color: #F2CE1B;
                     text-align: start;
+                }
+
+                .std-modal{
+                    margin: 10vh 25vw;
+                    width: 50vw;
+                    height: 75vh;
+                }
+
+                .std-modal .modal-content{
+                    width: 35vw;
+                    height: 65vh;
+                    background-color: #192B41;
+                    color: #fff;
                 }
 
 

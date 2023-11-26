@@ -1,15 +1,16 @@
 
-import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
-import Image from 'react-bootstrap/Image';
-import Row from 'react-bootstrap/Row';
-
+import React, { useState } from 'react';
+import { Modal, Button, Card, Container, Row, Col, Image, ListGroup } from 'react-bootstrap';
 
 function StdCard() {
+    const [showModal, setShowModal] = useState(false);
+
+    const handleModalOpen = () => setShowModal(true);
+    const handleModalClose = () => setShowModal(false);
+
   return (
     <>
-    <Card style={{ width: '15rem', height: '8rem' }}  className='card-color'>
+    <Card style={{ width: '15rem', height: '8rem' }}  className='card-color' onClick={handleModalOpen} >
       <Card.Body>
         <Container className='card-container'>
             <Row>
@@ -37,6 +38,31 @@ function StdCard() {
          </Container>
       </Card.Body>
     </Card>
+    <Modal className="std-modal" show={showModal} onHide={handleModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Apostar em : Time 1 X Time 2</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <ListGroup horizontal>
+                <Image className="team" src="/teste" rounded  />
+                <ListGroup.Item>Empate</ListGroup.Item>
+                <Image className="team" src="/teste" rounded  />
+            </ListGroup>
+            <ListGroup horizontal>
+                <ListGroup.Item>Vitória do Time 1</ListGroup.Item>
+                <ListGroup.Item>Empate</ListGroup.Item>
+                <ListGroup.Item>Vitória do Time 2</ListGroup.Item>
+            </ListGroup>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleModalClose}>
+            Fechar
+          </Button>
+          <Button variant="primary" onClick={handleModalClose}>
+            Apostar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     <style type="text/css">
             {`
 
@@ -44,6 +70,11 @@ function StdCard() {
                     background-color: #192B41;
                     color: white;
                     font-size: medium;
+                    cursor: pointer;
+                }
+
+                .card-color:hover{
+                    border: solid 1px #FFF;
                 }
 
                 .card-container{
@@ -65,6 +96,16 @@ function StdCard() {
                     margin-top: 3rem;
                 }
 
+                .std-modal{
+                    margin: 10vh 25vw;
+                    width: 50vw;
+                    height: 75vh;
+                }
+
+                .std-modal .modal-content{
+                    width: 35vw;
+                    height: 65vh;
+                }
 
 
                 `}
