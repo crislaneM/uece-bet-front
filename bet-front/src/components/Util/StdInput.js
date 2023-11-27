@@ -22,6 +22,7 @@ const InputField = styled.input`
   height: 40px;
   color: white;
   background-color: #192B41;
+  font-size: medium;
 `;
 
 const StdInput = ({ label, value, onChange, type = 'text', width}) => (

@@ -1,105 +1,167 @@
-// src/components/Cadastro.js
 import React, { useState } from 'react';
 import StdInput from '../Util/StdInput';
 import StdBtn from '../Util/StdBtn';
 import StdTitle from '../Util/Title';
-import styled from 'styled-components';
-
-const Row = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-
+import { Col, Row } from 'react-bootstrap';
 
 const Cadastro = () => {
-  const [uesername, setuesername] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-  const [nascinalidade, setNacionalidade] = useState('');
-  const [endereco, setEndereco] = useState('');
-  const [nascimento, setNascimento]= useState('');
+  const [nacionalidade, setNacionalidade] = useState('');
+  const [nascimento, setNascimento] = useState('');
   const [cpf, setCpf] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  
+  const [usernameError, setUsernameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [cpfError, setCpfError] = useState('');
+  const [nascimentoError, setNascimentoError] = useState('');
+  const [nacionalidadeError, setNacionalidadeError] = useState('');
 
-  const handleCadastro = () => {
-    // Lógica de autenticação aqui
-    const formData = {
-        username: uesername,
-        email: email,
-        nacionalidade: nascinalidade,
-        endereco:endereco,
+
+  const handleCadastro = (event) => {
+    event.preventDefault(); // Prevents the default form submission behavior
+
+    // Simple validation example
+    if (!username) {
+      setUsernameError('Campo de preenchimento obrigatório');
+    } else {
+      setUsernameError('');
+    }
+
+    if (!email) {
+      setEmailError('Campo de preenchimento obrigatório');
+    } else {
+      setEmailError('');
+    }
+
+    if (!password) {
+      setPasswordError('Campo de preenchimento obrigatório');
+    } else {
+      setPasswordError('');
+    }
+
+    if (password !== confirmPassword) {
+      setConfirmPasswordError('Não confere com o campo senha');
+    } else {
+      setConfirmPasswordError('');
+    }
+
+    if (!nacionalidade) {
+      setNacionalidadeError('Campo de preenchimento obrigatório');
+    } else {
+      setNacionalidadeError('');
+    }
+
+    if (!cpf) {
+      setCpfError('Campo de preenchimento obrigatório');
+    } else {
+      setCpfError('');
+    }
+
+    if (!nascimento) {
+      setNascimentoError('Campo de preenchimento obrigatório');
+    } else {
+      setNascimentoError('');
+    }
+
+    if (usernameError || emailError || passwordError || confirmPasswordError || cpfError || nascimentoError || nacionalidadeError) {
+      console.log('Erro no cadastro')
+    }
+    else{
+      const formData = {
+        nome: username,
         nascimento: nascimento,
         cpf: cpf,
-        password:password,
+        nacionalidade: nacionalidade,
+        email: email,
+        password: password,
       };
-    
-    console.log(formData);
+      console.log(formData);
+    }
+   
   };
 
   return (
-    <div>
-      
-      <StdTitle></StdTitle>
-      <form>
-        <StdInput
-          label="Nome"
-          value={uesername}
-          onChange={(e) => setuesername(e.target.value)}
-        />
-         <StdInput
+    <>
+      <div>
+        <StdTitle></StdTitle>
+        <form onSubmit={handleCadastro}>
+          <StdInput
+            label="Nome"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          {usernameError && <p className='error'>{usernameError}</p>}
+          <StdInput
             label="Email"
-            type='email'
+            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <Row>
-            <StdInput
+          />
+          {emailError && <p className='error'>{emailError}</p>}
+          <Row>
+            <Col>
+              <StdInput
                 label="Nascimento"
                 type="date"
                 value={nascimento}
                 width={'250px'}
                 onChange={(e) => setNascimento(e.target.value)}
-            />
-            <StdInput
+              />
+              {nascimentoError && <p className='error'>{emailError}</p>}
+            </Col>
+            <Col>
+              <StdInput
                 label="Nacionalidade"
-                value={nascinalidade}
+                value={nacionalidade}
                 width={'250px'}
                 onChange={(e) => setNacionalidade(e.target.value)}
+              />
+              {nacionalidadeError && <p className='error'>{emailError}</p>}
+            
+            </Col>
+           
+          </Row>
+          <StdInput
+              label="CPF"
+              value={cpf}
+              onChange={(e) => setCpf(e.target.value)}
             />
-        </Row>
-        <Row>
-            <StdInput
-                label="CPF"
-                value={cpf}
-                width={'250px'}
-                onChange={(e) => setCpf(e.target.value)}
-            />
-            <StdInput
-                label="Endereço"
-                value={endereco}
-                width={'250px'}
-                onChange={(e) => setEndereco(e.target.value)}
-            />
-        </Row>     
-         <StdInput
+            {cpfError && <p className='error'>{emailError}</p>}
+          <StdInput
             label="Senha"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-        />
-         <StdInput
+          />
+          {passwordError && <p className='error'>{passwordError}</p>}
+          <StdInput
             label="Confirmar Senha"
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-        />
-        <StdBtn label="Cadastrar" onClick={handleCadastro} />
-      </form>
-    </div>
+          />
+          {confirmPasswordError && (
+            <p className='error'>{confirmPasswordError}</p>
+          )}
+          <StdBtn label="Cadastrar" />
+        </form>
+      </div>
+      <style type="text/css">
+            {`
+
+                .error{
+                  font-size: 15px;
+                  color: red;
+                }
+
+                `}
+        </style>    
+    </>
+    
   );
 };
 
