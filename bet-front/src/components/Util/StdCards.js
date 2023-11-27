@@ -44,14 +44,15 @@ function StdCard() {
         </Modal.Header>
         <Modal.Body>
             <ListGroup horizontal>
-                <Image className="team" src="/teste" rounded  />
+                <ListGroup.Item>
+                    <Image className="team" src="/teste" rounded  />
+                    Vitória do Time 1
+                </ListGroup.Item>
                 <ListGroup.Item>Empate</ListGroup.Item>
-                <Image className="team" src="/teste" rounded  />
-            </ListGroup>
-            <ListGroup horizontal>
-                <ListGroup.Item>Vitória do Time 1</ListGroup.Item>
-                <ListGroup.Item>Empate</ListGroup.Item>
-                <ListGroup.Item>Vitória do Time 2</ListGroup.Item>
+                <ListGroup.Item>
+                    <Image className="team" src="/teste" rounded  />
+                    Vitória do Time 2
+                </ListGroup.Item>
             </ListGroup>
         </Modal.Body>
         <Modal.Footer>
@@ -105,6 +106,14 @@ function StdCard() {
                 .std-modal .modal-content{
                     width: 35vw;
                     height: 65vh;
+                }
+
+                .list-group-horizontal{
+                    width: 100%;
+                }
+
+                .list-group-item{
+                    width:-webkit-fill-available;
                 }
 
 
