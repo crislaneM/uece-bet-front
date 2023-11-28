@@ -56,7 +56,7 @@ const Login = () => {
       setSuccessMessage('Login bem-sucedido!');
 
       // Use navigate to redirect after login
-      navigate('/Main');
+      navigate('/main');
     } catch (error) {
       console.error('Erro:', error);
       setSuccessMessage('');

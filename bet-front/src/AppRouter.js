@@ -21,7 +21,7 @@ const AppRouter = () => {
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/recuperarSenha" element={<RecSenha />} />
         <Route
-          path="/"
+          path="/main"
           element={isAuthenticated ? <Main /> : <Navigate to="/login" />}
         />
       </Routes>
