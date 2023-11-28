@@ -4,6 +4,7 @@ import StdInput from '../Util/StdInput';
 import StdBtn from '../Util/StdBtn';
 import StdTitle from '../Util/Title';
 import styled from 'styled-components';
+import axios from 'axios';
 
 
 const LinksRow = styled.div`
@@ -18,7 +19,7 @@ const Login = () => {
   const [emailError, setemailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     // Simple validation example
     event.preventDefault();
     if (!email) {
@@ -43,11 +44,23 @@ const Login = () => {
     }
 
     // Authentication logic here
-    const formData = {
-      email: email,
-      password: password,
-    };
-    console.log(formData);
+    else {
+      try {
+        const response = await axios.post('http://127.0.0.1:5000/usuario/login', {
+          email: email,
+          senha: password,
+        });
+
+        console.log(response.data); // Exibindo a resposta do servidor
+
+        // Lógica para manipular a resposta conforme necessário
+
+      } catch (error) {
+        console.error('Erro:', error);
+      }
+
+    }
+     
   };
 
   return (

@@ -3,6 +3,7 @@ import StdInput from '../Util/StdInput';
 import StdBtn from '../Util/StdBtn';
 import StdTitle from '../Util/Title';
 import { Col, Row } from 'react-bootstrap';
+import axios from 'axios';
 
 const Cadastro = () => {
   const [username, setUsername] = useState('');
@@ -21,7 +22,7 @@ const Cadastro = () => {
   const [nacionalidadeError, setNacionalidadeError] = useState('');
 
 
-  const handleCadastro = (event) => {
+  const handleCadastro = async (event) => {
     event.preventDefault(); // Prevents the default form submission behavior
 
     // Simple validation example
@@ -70,16 +71,25 @@ const Cadastro = () => {
     if (usernameError || emailError || passwordError || confirmPasswordError || cpfError || nascimentoError || nacionalidadeError) {
       console.log('Erro no cadastro')
     }
-    else{
-      const formData = {
-        nome: username,
-        nascimento: nascimento,
-        cpf: cpf,
-        nacionalidade: nacionalidade,
-        email: email,
-        password: password,
-      };
-      console.log(formData);
+    else {
+      try {
+        const response = await axios.post('http://127.0.0.1:5000/usuario/cadastrar', {
+          nome: username,
+          nascimento: nascimento,
+          cpf: cpf,
+          nacionalidade: nacionalidade,
+          email: email,
+          senha: password,
+          tipo_usuario: 0
+        });
+
+        console.log(response.data); // Exibindo a resposta do servidor
+
+        // Lógica para manipular a resposta conforme necessário
+
+      } catch (error) {
+        console.error('Erro:', error);
+      }
     }
    
   };
