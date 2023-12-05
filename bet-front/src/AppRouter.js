@@ -17,6 +17,7 @@ const AppRouter = () => {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Login onLogin={() => setIsAuthenticated(true)} />} />
         <Route path="/login" element={<Login onLogin={() => setIsAuthenticated(true)} />} />
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/recuperarSenha" element={<RecSenha />} />
