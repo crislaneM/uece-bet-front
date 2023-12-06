@@ -1,24 +1,18 @@
+import React, { useState } from 'react';
 import StdTitle from '../Util/Title';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import StdBtn from './StdBtn';
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+// import { useNavigate } from 'react-router-dom';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
+import ProfileBtn from './ProfileBtn';
 
 const StdMenu = () => {
-
-    const navigate = useNavigate();
-
-    const handleLoginClick = () => {
-        // Navigate to the /login route
-        navigate('/login');
-    };
-
+ 
     const options = [
         {
           name: 'Enable body scrolling',
@@ -28,7 +22,7 @@ const StdMenu = () => {
       ];
 
       function SideBar({ name, ...props }) {
-        const [show, setShow] = useState(true);
+        const [show, setShow] = useState(false);
       
         const toggleShow = () => setShow((s) => !s);
       
@@ -77,7 +71,8 @@ const StdMenu = () => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav" className='nav-utils'>
                     <Nav className="">
-                        <StdBtn label={'Login'} onClick={handleLoginClick}/>
+                        {/* <StdBtn label={'Login'} onClick={handleLoginClick}/> */}
+                        <ProfileBtn userType={1} ></ProfileBtn>
                     </Nav>
                 </Navbar.Collapse>
             </Container>

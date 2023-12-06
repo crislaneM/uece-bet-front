@@ -4,6 +4,7 @@ import StdBtn from '../Util/StdBtn';
 import StdTitle from '../Util/Title';
 import { Col, Row } from 'react-bootstrap';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Cadastro = () => {
   const [username, setUsername] = useState('');
@@ -20,6 +21,7 @@ const Cadastro = () => {
   const [cpfError, setCpfError] = useState('');
   const [nascimentoError, setNascimentoError] = useState('');
   const [nacionalidadeError, setNacionalidadeError] = useState('');
+  const navigate = useNavigate();
 
 
   const handleCadastro = async (event) => {
@@ -83,7 +85,9 @@ const Cadastro = () => {
           tipo_usuario: 0
         });
 
-        console.log(response.data); // Exibindo a resposta do servidor
+        console.log(response.data); 
+        
+        navigate('/cad-confirm');// Exibindo a resposta do servidor
 
         // Lógica para manipular a resposta conforme necessário
 
