@@ -9,7 +9,7 @@ import axios from 'axios';
 
 const CreateEvent = () => {
     const [formData, setFormData] = useState({
-        id_adm: 1,
+        id_adm: 12,
         time_1: '',
         time_2: '',
         odd_time1: null,
