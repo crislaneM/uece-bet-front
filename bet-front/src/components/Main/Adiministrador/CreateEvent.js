@@ -31,6 +31,7 @@ const CreateEvent = () => {
         data: '',
         descricao: '',
         evento_status: true,
+        modalidade_evento: ''
       });
 
       useEffect(() => {
