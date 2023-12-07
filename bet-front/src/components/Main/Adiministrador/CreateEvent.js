@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import StdMenu from '../../Util/StdMenu';
+import {jwtDecode} from 'jwt-decode';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -7,9 +8,21 @@ import Form from 'react-bootstrap/Form';
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
 
+
+  
 const CreateEvent = () => {
+
+    const token = localStorage.getItem('token');
+
+    // Decodifique o token para obter as informações
+    const decodedToken = jwtDecode(token);
+
+
+    // Extraia o id_adm do token decodificado
+    const id = decodedToken.sub;
+    
     const [formData, setFormData] = useState({
-        id_adm: 12,
+        id_adm: id,
         time_1: '',
         time_2: '',
         odd_time1: null,
@@ -19,6 +32,15 @@ const CreateEvent = () => {
         descricao: '',
         evento_status: true,
       });
+
+      useEffect(() => {
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+    
+        axios.defaults.headers.common = headers;
+      }, [token]);
+      
       const handleInputChange = (e) => {
         const { name, value, type, checked, files } = e.target;
         let newValue;
