@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 import StdTitle from '../Util/Title';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -10,6 +10,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
 import ProfileBtn from './ProfileBtn';
+import axios from 'axios';
 
 const StdMenu = () => {
 
@@ -17,7 +18,27 @@ const StdMenu = () => {
 
     // Decodifique o token para obter as informações
     const decodedToken = jwtDecode(token);
-    console.log(decodedToken)
+    console.log(decodedToken.sub)
+
+    const [authUser, setAuthUser] = useState([]);
+
+    useEffect(() => {
+        const authUser = async () => {
+        try {
+            const response = await axios.get(`http://127.0.0.1:5000/usuario/protegido/${decodedToken.sub}`);
+            setAuthUser(response.data);
+        } catch (error) {
+            console.error('Erro ao buscar usuário:', error);
+        }
+        };
+
+        authUser();
+    }, [decodedToken.sub]);
+
+    console.log(authUser.tipo_usuario);
+
+    const userType = parseInt(authUser.tipo_usuario);
+    const userSaldo = parseFloat(authUser.saldo)
  
     const options = [
         {
@@ -77,13 +98,24 @@ const StdMenu = () => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav" className='nav-utils'>
                     <Nav className="">
-                        <ProfileBtn userType={decodedToken.sub} ></ProfileBtn>
+                        {userType === 0 && <>
+                            <StdBtn label={'Depositar'} onClick={()=> console.log('1')}/>
+                            <div className="saldo">R$:{userSaldo}</div>
+                        </>
+                       }
+                        <ProfileBtn userType={userType} ></ProfileBtn>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
         </Navbar>
         <style type="text/css">
             {`
+                .saldo{
+                    color: #F2CE1B;
+                    font-size: 30px;
+                    margin: 0 15px;
+                }
+
                 .navbar-brand{
                     display: flex;
                     flex-direction: row;
@@ -121,10 +153,6 @@ const StdMenu = () => {
         </style>
     </>
     
-    // <div>
-    
-    //   <StdTitle />
-    // </div>
   );
 };
 
