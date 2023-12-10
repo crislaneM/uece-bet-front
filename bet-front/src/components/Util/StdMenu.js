@@ -11,34 +11,78 @@ import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
 import ProfileBtn from './ProfileBtn';
 import axios from 'axios';
+import { Modal, Button } from 'react-bootstrap';
 
 const StdMenu = () => {
 
     const token = localStorage.getItem('token');
-
-    // Decodifique o token para obter as informações
     const decodedToken = jwtDecode(token);
-    console.log(decodedToken.sub)
-
-    const [authUser, setAuthUser] = useState([]);
+    const [authUser, setAuthUser] = useState({});
+    const userType = parseInt(authUser.tipo_usuario);
+    const [userSaldo, setUserSaldo] = useState(parseFloat(authUser.saldo));
+    const [shouldUpdateSaldo, setShouldUpdateSaldo] = useState(false);
+    const [depositValue, setDepositValue] = useState('');
+    const [showDepositModal, setShowDepositModal] = useState(false);
 
     useEffect(() => {
-        const authUser = async () => {
-        try {
+        const fetchUser = async () => {
+          try {
             const response = await axios.get(`http://127.0.0.1:5000/usuario/protegido/${decodedToken.sub}`);
             setAuthUser(response.data);
-        } catch (error) {
+            setUserSaldo(parseFloat(response.data.saldo));
+          } catch (error) {
             console.error('Erro ao buscar usuário:', error);
+          }
+        };
+    
+        fetchUser();
+      }, [decodedToken.sub, shouldUpdateSaldo]);
+
+    const handleDeposit = async () => {
+        try {
+        const response = await axios.post(
+            `http://127.0.0.1:5000/carteira/depositar/${decodedToken.sub}`,
+            { deposito: parseFloat(depositValue) }
+        );
+        setShouldUpdateSaldo(true);
+        } catch (error) {
+        console.error('Erro ao fazer depósito:', error);
+        }
+    };
+
+    useEffect(() => {
+        const updateSaldo = async () => {
+        try {
+            const response = await axios.get(`http://127.0.0.1:5000/usuario/protegido/${decodedToken.sub}`);
+            setUserSaldo(parseFloat(response.data.saldo));
+        } catch (error) {
+            console.error('Erro ao buscar usuário após depósito:', error);
         }
         };
 
-        authUser();
-    }, [decodedToken.sub]);
+        if (shouldUpdateSaldo) {
+        updateSaldo();
+        setShouldUpdateSaldo(false); // Resetar a flag após a atualização
+        }
+    }, [shouldUpdateSaldo, decodedToken.sub]);
 
-    console.log(authUser.tipo_usuario);
+    const handleCloseDepositModal = () => setShowDepositModal(false);
 
-    const userType = parseInt(authUser.tipo_usuario);
-    const userSaldo = parseFloat(authUser.saldo)
+    useEffect(() => {
+        const updateSaldo = async () => {
+          try {
+            const response = await axios.get(`http://127.0.0.1:5000/usuario/protegido/${decodedToken.sub}`);
+            setUserSaldo(parseFloat(response.data.saldo));
+          } catch (error) {
+            console.error('Erro ao buscar usuário após depósito:', error);
+          }
+        };
+      
+        if (shouldUpdateSaldo) {
+          updateSaldo();
+          setShouldUpdateSaldo(false); // Resetar a flag após a atualização
+        }
+      }, [shouldUpdateSaldo, decodedToken.sub]);
  
     const options = [
         {
@@ -67,15 +111,6 @@ const StdMenu = () => {
                             <ListGroup.Item action href="#link2" className='filter-btn'>
                            Filtro 2
                             </ListGroup.Item>
-                            <ListGroup.Item action href="#link3" className='filter-btn'>
-                           Filtro 3
-                            </ListGroup.Item>
-                            <ListGroup.Item action href="#link4" className='filter-btn'>
-                           Filtro 4
-                            </ListGroup.Item>
-                            <ListGroup.Item action href="#link5" className='filter-btn'>
-                           Filtro 5
-                            </ListGroup.Item>
                         </ListGroup>
                     </Row>
                 </Tab.Container>
@@ -98,8 +133,8 @@ const StdMenu = () => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav" className='nav-utils'>
                     <Nav className="">
+                        <StdBtn label={'Depositar'}onClick={() => setShowDepositModal(true)} />
                         {userType === 0 && <>
-                            <StdBtn label={'Depositar'} onClick={()=> console.log('1')}/>
                             <div className="saldo">R$:{userSaldo}</div>
                         </>
                        }
@@ -108,6 +143,23 @@ const StdMenu = () => {
                 </Navbar.Collapse>
             </Container>
         </Navbar>
+        <Modal show={showDepositModal} onHide={handleCloseDepositModal} >
+            <Modal.Header closeButton className="deposit-Modal">
+                <StdTitle />
+            </Modal.Header>
+            <Modal.Body className="deposit-Modal">
+                <p>Informe o valor que deseja depositar:</p>
+                <input className="deposit-input" type="number" value={depositValue} onChange={(e) => setDepositValue(e.target.value)} />
+            </Modal.Body>
+            <Modal.Footer className="deposit-Modal">
+                <Button variant="secondary" onClick={handleCloseDepositModal}>
+                Fechar
+                </Button>
+                <Button variant="primary" onClick={() => { handleDeposit(); }}>
+                Depositar
+                </Button>
+            </Modal.Footer>
+        </Modal>
         <style type="text/css">
             {`
                 .saldo{
@@ -147,6 +199,18 @@ const StdMenu = () => {
                 .filter-btn{
                     background: #031539;
                     color: #fff;
+                }
+
+                .deposit-Modal{
+                    background: #031539;
+                    color: #fff;
+                }
+
+                .deposit-input{
+                    width: 100%;
+                    color: white;
+                    background: #031539;
+                    text-align: center;
                 }
 
                 `}
