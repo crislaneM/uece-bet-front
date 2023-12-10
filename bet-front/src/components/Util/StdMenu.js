@@ -128,7 +128,7 @@ const StdMenu = () => {
                 {options.map((props, idx) => (
                     <SideBar key={idx} {...props} />
                 ))}
-                    <StdTitle />
+                    <StdTitle to={'/main'} />
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav" className='nav-utils'>

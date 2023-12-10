@@ -9,12 +9,28 @@ import Confirm from './components/Cadastro/Confirm';
 
 const AppRouter = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Verificar se o usuário está autenticado (por exemplo, verificando se há um token JWT no localStorage)
-    const token = localStorage.getItem('token');
-    setIsAuthenticated(!!token);
+    const checkAuthentication = async () => {
+      try {
+        const token = localStorage.getItem('token');
+
+        if (token) {
+          
+          setIsAuthenticated(true);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuthentication();
   }, []);
+
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
 
   return (
     <Router>
