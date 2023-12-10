@@ -1,70 +1,69 @@
-
 import React, { useState } from 'react';
 import { Modal, Button, Card, Container, Row, Col, Image, ListGroup } from 'react-bootstrap';
 
-function StdCard() {
+function StdCard({ evento, idEvento }) {
     const [showModal, setShowModal] = useState(false);
 
     const handleModalOpen = () => setShowModal(true);
     const handleModalClose = () => setShowModal(false);
 
-  return (
-    <>
-    <Card style={{ width: '15rem', height: '8rem' }}  className='card-color' onClick={handleModalOpen} >
-      <Card.Body>
-        <Container className='card-container'>
-            <Row>
-                <Col xs={6} md={4} className='card-colum'>
-                    <Image className="team" src="/teste" rounded />
-                    <p>
-                        0.0
-                    </p>
-                </Col>
-                <Col xs={6} md={4} className='card-colum'>
-                    <h5 className="draw">
-                            X
-                    </h5>
-                    <Card.Text>
-                        0.0
-                    </Card.Text>
-                </Col>
-                <Col xs={6} md={4} className='card-colum'>
-                    <Image className="team" src="/teste" rounded  />
-                    <Card.Text>
-                        0.0
-                    </Card.Text>  
-                </Col>
-            </Row>
-         </Container>
-      </Card.Body>
-    </Card>
-    <Modal className="std-modal" show={showModal} onHide={handleModalClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Apostar em : Time 1 X Time 2</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-            <ListGroup horizontal>
-                <ListGroup.Item>
-                    <Image className="team" src="/teste" rounded  />
-                    Vitória do Time 1
-                </ListGroup.Item>
-                <ListGroup.Item>Empate</ListGroup.Item>
-                <ListGroup.Item>
-                    <Image className="team" src="/teste" rounded  />
-                    Vitória do Time 2
-                </ListGroup.Item>
-            </ListGroup>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleModalClose}>
-            Fechar
-          </Button>
-          <Button variant="primary" onClick={handleModalClose}>
-            Apostar
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    <style type="text/css">
+    return (
+        <>
+            <Card style={{ width: '15rem', height: '8rem' }} className='card-color' onClick={handleModalOpen}>
+                <Card.Body>
+                    <Container className='card-container'>
+                        <Row>
+                            <Col xs={6} md={4} className='card-colum'>
+                                <Image className="team" src="/teste" rounded />
+                                <p>
+                                    {evento.odd_time1}
+                                </p>
+                            </Col>
+                            <Col xs={6} md={4} className='card-colum'>
+                                <h5 className="draw">
+                                    X
+                                </h5>
+                                <Card.Text>
+                                {evento.odd_empate}
+                                </Card.Text>
+                            </Col>
+                            <Col xs={6} md={4} className='card-colum'>
+                                <Image className="team" src="/teste" rounded />
+                                <Card.Text>
+                                    {evento.odd_time2}
+                                </Card.Text>
+                            </Col>
+                        </Row>
+                    </Container>
+                </Card.Body>
+            </Card>
+            <Modal className="std-modal" show={showModal} onHide={handleModalClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Apostar em : {evento.time_1} X {evento.time_2}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <ListGroup horizontal>
+                        <ListGroup.Item>
+                            <Image className="team" src="/teste" rounded />
+                            Vitória do {evento.time_1}
+                        </ListGroup.Item>
+                        <ListGroup.Item>Empate</ListGroup.Item>
+                        <ListGroup.Item>
+                            <Image className="team" src="/teste" rounded />
+                            Vitória do {evento.time_2}
+                        </ListGroup.Item>
+                    </ListGroup>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleModalClose}>
+                        Fechar
+                    </Button>
+                    <Button variant="primary" onClick={handleModalClose}>
+                        Apostar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <style type="text/css">
             {`
 
                 .card-color {
@@ -118,12 +117,10 @@ function StdCard() {
 
 
                 `}
-        </style>
-    
-    </>
-   
-    
-  );
+                            
+            </style>
+        </>
+    );
 }
 
 export default StdCard;

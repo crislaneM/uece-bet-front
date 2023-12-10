@@ -4,7 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import StdBtn from './StdBtn';
-// import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
@@ -12,6 +12,12 @@ import Tab from 'react-bootstrap/Tab';
 import ProfileBtn from './ProfileBtn';
 
 const StdMenu = () => {
+
+    const token = localStorage.getItem('token');
+
+    // Decodifique o token para obter as informações
+    const decodedToken = jwtDecode(token);
+    console.log(decodedToken)
  
     const options = [
         {
@@ -71,8 +77,7 @@ const StdMenu = () => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav" className='nav-utils'>
                     <Nav className="">
-                        {/* <StdBtn label={'Login'} onClick={handleLoginClick}/> */}
-                        <ProfileBtn userType={1} ></ProfileBtn>
+                        <ProfileBtn userType={decodedToken.sub} ></ProfileBtn>
                     </Nav>
                 </Navbar.Collapse>
             </Container>

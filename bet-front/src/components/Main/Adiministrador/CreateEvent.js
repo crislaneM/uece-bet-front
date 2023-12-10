@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import StdMenu from '../../Util/StdMenu';
-import {jwtDecode} from 'jwt-decode';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import { Button } from 'react-bootstrap';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
+import React, { useEffect, useState } from 'react';
+import { Button, Modal } from 'react-bootstrap';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
 
+import StdMenu from '../../Util/StdMenu';
 
-  
 const CreateEvent = () => {
+
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+    const [resetForm, setResetForm] = useState(false);
 
     const token = localStorage.getItem('token');
 
@@ -41,6 +43,25 @@ const CreateEvent = () => {
     
         axios.defaults.headers.common = headers;
       }, [token]);
+
+      useEffect(() => {
+        if (resetForm) {
+            setFormData({
+                id_adm: id,
+                time_1: '',
+                time_2: '',
+                odd_time1: null,
+                odd_time2: null,
+                odd_empate: null,
+                data: '',
+                descricao: '',
+                evento_status: true,
+                modalidade_evento: ''
+            });
+    
+            setResetForm(false);
+        }
+    }, [resetForm]);
       
       const handleInputChange = (e) => {
         const { name, value, type, checked, files } = e.target;
@@ -69,11 +90,30 @@ const CreateEvent = () => {
               formData
             );
             console.log('Resposta do servidor:', response.data);
-            // Adicione aqui a lógica para lidar com a resposta do servidor conforme necessário
+            setShowConfirmationModal(true);
+            setResetForm(true);
           } catch (error) {
             console.error('Erro ao enviar dados:', error);
           }
       };
+      const handleCloseModal = () => {
+        // Redefina os valores dos inputs
+        setFormData({
+            id_adm: id,
+            time_1: '',
+            time_2: '',
+            odd_time1: null,
+            odd_time2: null,
+            odd_empate: null,
+            data: '',
+            descricao: '',
+            evento_status: true,
+            modalidade_evento: ''
+        });
+
+        // Feche o modal
+        setShowConfirmationModal(false);
+    };
 
   return (
     <>
@@ -82,46 +122,32 @@ const CreateEvent = () => {
         <Form onSubmit={handleSubmit}>
             <Row className="mb-3">
                 <Col>
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>Time 1</Form.Label>
-                        <Form.Control   type="file" />
-                    </Form.Group>
+                    <Form.Label>Time 1</Form.Label>
                     <Form.Control onChange={handleInputChange} name="time_1" type="text" placeholder="Digite o nome do Time 1" />       
                 </Col>
                 <Col>
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>Time 2</Form.Label>
-                        <Form.Control type="file" />
-                    </Form.Group>
+                    <Form.Label>Time 2</Form.Label>
                     <Form.Control onChange={handleInputChange} name="time_2" type="text" placeholder="Digite o nome do Time 2" />
                 </Col>
             </Row>
             <Row className="mb-3">
                 <Col>
                     <Form.Label>Odd Time 1</Form.Label>
-                    <Form.Control onChange={handleInputChange} name="odd_time1" type="number" />
+                    <Form.Control onChange={handleInputChange} name="odd_time1" type="text" />
                 </Col>
                 <Col>
                     <Form.Label>Odd Empate</Form.Label>
-                    <Form.Control onChange={handleInputChange} name="odd_empate"  type="number" />
+                    <Form.Control onChange={handleInputChange} name="odd_empate"  type="text" />
                 </Col>
                 <Col>
                     <Form.Label>Odd Time 2</Form.Label>
-                    <Form.Control onChange={handleInputChange} name="odd_time2" type="number" />
+                    <Form.Control onChange={handleInputChange} name="odd_time2" type="text" />
                 </Col>
             </Row>
             <Row className="mb-3">
                 <Col>
-                    <Form.Label>Horário</Form.Label>
-                    <Form.Control type="time" />
-                </Col>
-                <Col>
                     <Form.Label>Data</Form.Label>
                     <Form.Control onChange={handleInputChange} name="data" type="date" />
-                </Col>
-                <Col>
-                    <Form.Label>Local</Form.Label>
-                    <Form.Control type="text" />
                 </Col>
             </Row>
             <Row>
@@ -145,6 +171,17 @@ const CreateEvent = () => {
                 Criar Evento
             </Button>
         </Form>
+        <Modal show={showConfirmationModal} onHide={() => setShowConfirmationModal(false)}>
+            <Modal.Header closeButton>
+                <Modal.Title>Evento Criado com Sucesso</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>O seu evento foi cadastrado com sucesso!</Modal.Body>
+            <Modal.Footer>
+                <Button variant="primary" onClick={() => handleCloseModal()}>
+                    Fechar
+                </Button>
+            </Modal.Footer>
+        </Modal>
       </Container>
       <style type="text/css">
             {`
@@ -152,6 +189,7 @@ const CreateEvent = () => {
               .create-container{
                 display: flex;
                 position: absolute;
+                padding: 25px;
                 width: 65vw;
                 height: 70vh;
                 background: #192B41;
