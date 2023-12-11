@@ -96,7 +96,7 @@ function StdCard({ evento, idEvento }) {
             encerrarData
         );
 
-        // window.location.reload();
+        window.location.reload();
 
     }
 
