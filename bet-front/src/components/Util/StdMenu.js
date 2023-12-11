@@ -138,7 +138,7 @@ const StdMenu = () => {
       
         return (
           <>
-            <StdBtn label={'Menu'} onClick={toggleShow }/>
+            <StdBtn label={'='} onClick={toggleShow }/>
             <Offcanvas show={show} {...props}>
               <Offcanvas.Body>
                 <Tab.Container id="list-group-tabs-example">

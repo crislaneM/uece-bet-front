@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button, Card, Container, Row, Col, Image, ListGroup, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
@@ -6,59 +6,96 @@ import { jwtDecode } from 'jwt-decode';
 function StdCard({ evento, idEvento }) {
     const token = localStorage.getItem('token');
     const decodedToken = jwtDecode(token);
-  const [showModal, setShowModal] = useState(false);
-  const [aposta, setAposta] = useState(null);
-  const [valorAposta, setValorAposta] = useState('');
+    const [authUser, setAuthUser] = useState({});
+    const [showModal, setShowModal] = useState(false);
+    const [aposta, setAposta] = useState(null);
+    const [valorAposta, setValorAposta] = useState('');
 
-  const handleModalOpen = () => setShowModal(true);
-  const handleModalClose = () => setShowModal(false);
+    const handleModalOpen = () => setShowModal(true);
+    const handleModalClose = () => setShowModal(false);
 
-  const handleApostaChange = (timeApostado, odd) => {
-    setAposta({ timeApostado, odd });
-  };
+    const handleApostaChange = (timeApostado, odd) => {
+        setAposta({ timeApostado, odd });
+    };
 
-  const handleValorApostaChange = (novoValorAposta) => {
-    setValorAposta(novoValorAposta);
-  };
+    const handleValorApostaChange = (novoValorAposta) => {
+        setValorAposta(novoValorAposta);
+    };
 
-  const handleApostar = async () => {
-    try {
-      // Verifica se a aposta e o valor da aposta foram selecionados
-      if (!aposta || !valorAposta) {
-        console.error('Selecione a aposta e insira o valor da aposta.');
-        return;
-      }
-  
-      // Cria um objeto com os dados da aposta
-      const apostaData = {
-        id_evento: evento.id,
-        id_apostador: decodedToken.sub,
-        resultado_apostado: aposta.timeApostado,
-        odd_apostada: parseFloat(aposta.odd),
-        valor_apostado: parseFloat(valorAposta),
-      };
+    useEffect(() => {
+        const fetchUser = async () => {
+        try {
+            const response = await axios.get(`http://127.0.0.1:5000/usuario/protegido/${decodedToken.sub}`);
+            setAuthUser(response.data);
+            console.log(response)
+        } catch (error) {
+            console.error('Erro ao buscar usuário:', error);
+        }
+        };
 
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-  
-      axios.defaults.headers.common = headers;
+        fetchUser();
+    }, [decodedToken.sub]);
 
-  
-      // Faz a requisição para o back-end
-      const response = await axios.post(
-        `http://127.0.0.1:5000/apostas/apostar/${evento.id}`, // Substitua pela sua URL de backend
-        apostaData
-      );
-  
-      console.log('Aposta realizada com sucesso:', response.data);
-  
-      handleModalClose();
-      window.location.reload();
-    } catch (error) {
-      console.error('Erro ao fazer aposta:', error);
+    const userType = parseInt(authUser.tipo_usuario);
+
+    const handleApostar = async () => {
+        try {
+        // Verifica se a aposta e o valor da aposta foram selecionados
+        if (!aposta || !valorAposta) {
+            console.error('Selecione a aposta e insira o valor da aposta.');
+            return;
+        }
+    
+        // Cria um objeto com os dados da aposta
+        const apostaData = {
+            id_evento: evento.id,
+            id_apostador: decodedToken.sub,
+            resultado_apostado: aposta.timeApostado,
+            odd_apostada: parseFloat(aposta.odd),
+            valor_apostado: parseFloat(valorAposta),
+        };
+
+        const headers = {
+            Authorization: `Bearer ${token}`,
+        };
+    
+        axios.defaults.headers.common = headers;
+
+    
+        const response = await axios.post(
+            `http://127.0.0.1:5000/apostas/apostar/${evento.id}`,
+            apostaData
+        );
+    
+        console.log('Aposta realizada com sucesso:', response.data);
+    
+        handleModalClose();
+        window.location.reload();
+        } catch (error) {
+        console.error('Erro ao fazer aposta:', error);
+        }
+    };
+
+    const handleEncerrar = async () =>{
+        const headers = {
+            Authorization: `Bearer ${token}`,
+        };
+        axios.defaults.headers.common = headers;
+
+        const encerrarData = {
+            id_evento: evento.id,
+            evento_status: false,
+            resultado_evento: aposta.timeApostado,
+        };
+
+        await axios.put(
+            `http://127.0.0.1:5000/evento/encerrar/${evento.id}`,
+            encerrarData
+        );
+
+        window.location.reload();
+
     }
-  };
 
   return (
     <>
@@ -146,9 +183,19 @@ function StdCard({ evento, idEvento }) {
           <Button variant="secondary" onClick={handleModalClose}>
             Fechar
           </Button>
-          <Button variant="primary" onClick={handleApostar}>
-            Apostar
-          </Button>
+          {userType === 1 && 
+            <>
+                <Button variant="primary" onClick={handleEncerrar}>
+                    Encerrar Evento
+                </Button>
+            </>
+            }
+            {userType ===0 && 
+            <>
+                <Button variant="primary" onClick={handleApostar}>
+                    Apostar
+                </Button>
+            </>}
         </Modal.Footer>
       </Modal>
       <style type="text/css">
