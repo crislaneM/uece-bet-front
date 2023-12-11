@@ -61,7 +61,7 @@ const CreateEvent = () => {
     
             setResetForm(false);
         }
-    }, [resetForm]);
+    }, [resetForm, id]);
       
       const handleInputChange = (e) => {
         const { name, value, type, checked, files } = e.target;

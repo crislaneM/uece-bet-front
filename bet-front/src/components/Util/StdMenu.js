@@ -20,9 +20,45 @@ const StdMenu = () => {
     const [authUser, setAuthUser] = useState({});
     const userType = parseInt(authUser.tipo_usuario);
     const [userSaldo, setUserSaldo] = useState(parseFloat(authUser.saldo));
+    const [casaSaldo, setCasaSaldo] = useState(100);
     const [shouldUpdateSaldo, setShouldUpdateSaldo] = useState(false);
     const [depositValue, setDepositValue] = useState('');
     const [showDepositModal, setShowDepositModal] = useState(false);
+
+    useEffect(() => {
+        const updateCasaSaldo = async () => {
+          try {
+            const response = await axios.get(`http://127.0.0.1:5000/carteira/ver_saldo/adm`);
+            setCasaSaldo(parseFloat(response.data.saldo));
+            console.log(response.data);
+          } catch (error) {
+            console.error('Erro ao buscar saldo da casa:', error);
+          }
+        };
+    
+        if (userType === 1) {
+          // Only update casaSaldo for userType 1 (assuming userType 1 corresponds to the casa)
+          updateCasaSaldo();
+        }
+      }, [userType]); 
+      
+      const handleCasaDeposit = async () => {
+        const headers = {
+            Authorization: `Bearer ${token}`,
+          };
+      
+          axios.defaults.headers.common = headers;
+        try {
+        const response = await axios.post(
+            `http://127.0.0.1:5000/carteira/depositar/adm`,
+            { deposito2: parseFloat(depositValue) }
+        );
+        setShouldUpdateSaldo(true);
+        console.log(response)
+        } catch (error) {
+            console.error('Erro ao fazer depósito:', error);
+        }
+    };
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -45,8 +81,9 @@ const StdMenu = () => {
             { deposito: parseFloat(depositValue) }
         );
         setShouldUpdateSaldo(true);
+        console.log(response)
         } catch (error) {
-        console.error('Erro ao fazer depósito:', error);
+            console.error('Erro ao fazer depósito:', error);
         }
     };
 
@@ -83,6 +120,8 @@ const StdMenu = () => {
           setShouldUpdateSaldo(false); // Resetar a flag após a atualização
         }
       }, [shouldUpdateSaldo, decodedToken.sub]);
+
+      
  
     const options = [
         {
@@ -138,6 +177,10 @@ const StdMenu = () => {
                             <div className="saldo">R$:{userSaldo}</div>
                         </>
                        }
+                        {userType === 1 && <>
+                            <div className="saldo">R$:{casaSaldo}</div>
+                        </>
+                       }
                         <ProfileBtn userType={userType} ></ProfileBtn>
                     </Nav>
                 </Navbar.Collapse>
@@ -155,9 +198,19 @@ const StdMenu = () => {
                 <Button variant="secondary" onClick={handleCloseDepositModal}>
                 Fechar
                 </Button>
-                <Button variant="primary" onClick={() => { handleDeposit(); }}>
-                Depositar
-                </Button>
+                {userType === 0 && <>
+                        <Button variant="primary" onClick={() => { handleDeposit(); }}>
+                            Depositar
+                        </Button>
+                        </>
+                }
+                {userType === 1 && <>
+                        <Button variant="primary" onClick={() => { handleCasaDeposit(); }}>
+                            Depositar
+                        </Button>
+                        </>
+                }
+                
             </Modal.Footer>
         </Modal>
         <style type="text/css">
