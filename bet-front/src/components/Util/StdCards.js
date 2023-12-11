@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, Card, Container, Row, Col, Image, ListGroup, Form } from 'react-bootstrap';
+import { Modal, Button, Card, Container, Row, Col, ListGroup, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import EscudoFutebol from './images/escudo-de-futebol.png';
@@ -100,6 +100,12 @@ function StdCard({ evento, idEvento }) {
 
     }
 
+    const estiloImagem = {
+      filter: `brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(200deg)`,
+      width: '35px',
+      height: '35px',
+    };
+
   return (
     <>
       <Card style={{ width: '15rem', height: '8rem' }} className='card-color' onClick={handleModalOpen}>
@@ -107,7 +113,7 @@ function StdCard({ evento, idEvento }) {
           <Container className='card-container'>
             <Row>
               <Col xs={6} md={4} className='card-colum'>
-                <img src={EscudoFutebol} alt="Escudo Cancelado" />
+                <img src={EscudoFutebol} style={estiloImagem} alt="Escudo Cancelado" />
                 <p>{evento.odd_time1}</p>
               </Col>
               <Col xs={6} md={4} className='card-colum'>
@@ -115,7 +121,7 @@ function StdCard({ evento, idEvento }) {
                 <Card.Text>{evento.odd_empate}</Card.Text>
               </Col>
               <Col xs={6} md={4} className='card-colum'>
-                <img src={EscudoCancelado} alt="Escudo Cancelado" />
+                <img src={EscudoCancelado} style={estiloImagem} alt="Escudo Cancelado" />
                 <Card.Text>{evento.odd_time2}</Card.Text>
               </Col>
             </Row>
@@ -129,8 +135,7 @@ function StdCard({ evento, idEvento }) {
         <Modal.Body>
           <ListGroup horizontal>
             <ListGroup.Item className='aposta-input'>
-              {/* <Image className="team" src="./images/escudo-de-futebol.png" rounded /> */}
-              <logoTime1></logoTime1>
+              <img src={EscudoFutebol} style={estiloImagem} alt="Escudo Cancelado" />
               <label>Vitória de {evento.time_1}</label>
               <input
                 type="radio"
@@ -153,8 +158,7 @@ function StdCard({ evento, idEvento }) {
               <h5>{evento.odd_empate}</h5>
             </ListGroup.Item>
             <ListGroup.Item className='aposta-input'>
-              <Image className="team" src="./images/escudo-com-simbolo-de-cancelamento.png" rounded />
-              <img src={EscudoCancelado} alt="Escudo Cancelado" />
+              <img src={EscudoCancelado} style={estiloImagem} alt="Escudo Cancelado" />
               <label>Vitória de {evento.time_2}</label>
               <input
                 type="radio"
@@ -172,6 +176,7 @@ function StdCard({ evento, idEvento }) {
               as="textarea"
               rows={3}
               value={evento.descricao}
+              className='input-color'
               readOnly
             />
           </Form.Group>
@@ -183,6 +188,7 @@ function StdCard({ evento, idEvento }) {
                 type="number"
                 value={valorAposta}
                 onChange={(e) => handleValorApostaChange(e.target.value)}
+                className='input-color'
                 />
             </Form.Group>
           </>
@@ -210,6 +216,10 @@ function StdCard({ evento, idEvento }) {
       </Modal>
       <style type="text/css">
         {`
+            .input-color{
+              background-color: #031539;
+              color: #F2CE1B;
+            }
             .card-color {
                 background-color: #192B41;
                 color: white;

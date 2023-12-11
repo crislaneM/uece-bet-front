@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Modal, Button, Card, Container, Row, Col, Image, ListGroup } from 'react-bootstrap';
+import { Modal, Button, Card, Container, Row, Col, Image } from 'react-bootstrap';
+import StdTitle from '../Util/Title';
 
 
 function ImpCard() {
@@ -44,14 +45,10 @@ function ImpCard() {
     </Card>
     <Modal className="stdModal" show={showModal} onHide={handleModalClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Apostar em : Time 1 X Time 2 </Modal.Title>
+          <Modal.Title>A modal de Eventos Importantes ainda será implementada</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-            <ListGroup horizontal>
-                    <ListGroup.Item>Vitória do Time 1</ListGroup.Item>
-                    <ListGroup.Item>Empate</ListGroup.Item>
-                    <ListGroup.Item>Vitória do Time 2</ListGroup.Item>
-            </ListGroup>
+        <Modal.Body className='imp-card-color'>
+            <StdTitle></StdTitle>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleModalClose}>
