@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Button, Card, Container, Row, Col, Image, ListGroup, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import EscudoFutebol from './images/escudo-de-futebol.png';
+import EscudoCancelado from './images/escudo-com-simbolo-de-cancelamento.png';
+
+
 
 function StdCard({ evento, idEvento }) {
     const token = localStorage.getItem('token');
@@ -27,7 +31,6 @@ function StdCard({ evento, idEvento }) {
         try {
             const response = await axios.get(`http://127.0.0.1:5000/usuario/protegido/${decodedToken.sub}`);
             setAuthUser(response.data);
-            console.log(response)
         } catch (error) {
             console.error('Erro ao buscar usuário:', error);
         }
@@ -93,7 +96,7 @@ function StdCard({ evento, idEvento }) {
             encerrarData
         );
 
-        window.location.reload();
+        // window.location.reload();
 
     }
 
@@ -104,7 +107,7 @@ function StdCard({ evento, idEvento }) {
           <Container className='card-container'>
             <Row>
               <Col xs={6} md={4} className='card-colum'>
-                <Image className="team" src="/teste" rounded />
+                <img src={EscudoFutebol} alt="Escudo Cancelado" />
                 <p>{evento.odd_time1}</p>
               </Col>
               <Col xs={6} md={4} className='card-colum'>
@@ -112,7 +115,7 @@ function StdCard({ evento, idEvento }) {
                 <Card.Text>{evento.odd_empate}</Card.Text>
               </Col>
               <Col xs={6} md={4} className='card-colum'>
-                <Image className="team" src="/teste" rounded />
+                <img src={EscudoCancelado} alt="Escudo Cancelado" />
                 <Card.Text>{evento.odd_time2}</Card.Text>
               </Col>
             </Row>
@@ -126,7 +129,8 @@ function StdCard({ evento, idEvento }) {
         <Modal.Body>
           <ListGroup horizontal>
             <ListGroup.Item className='aposta-input'>
-              <Image className="team" src="/teste" rounded />
+              {/* <Image className="team" src="./images/escudo-de-futebol.png" rounded /> */}
+              <logoTime1></logoTime1>
               <label>Vitória de {evento.time_1}</label>
               <input
                 type="radio"
@@ -149,7 +153,8 @@ function StdCard({ evento, idEvento }) {
               <h5>{evento.odd_empate}</h5>
             </ListGroup.Item>
             <ListGroup.Item className='aposta-input'>
-              <Image className="team" src="/teste" rounded />
+              <Image className="team" src="./images/escudo-com-simbolo-de-cancelamento.png" rounded />
+              <img src={EscudoCancelado} alt="Escudo Cancelado" />
               <label>Vitória de {evento.time_2}</label>
               <input
                 type="radio"
@@ -170,14 +175,19 @@ function StdCard({ evento, idEvento }) {
               readOnly
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="valorAposta">
-            <Form.Label>Valor da aposta:</Form.Label>
-            <Form.Control
-              type="number"
-              value={valorAposta}
-              onChange={(e) => handleValorApostaChange(e.target.value)}
-            />
-          </Form.Group>
+          {userType === 0 && 
+          <>
+           <Form.Group className="mb-3" controlId="valorAposta">
+                <Form.Label>Valor da aposta:</Form.Label>
+                <Form.Control
+                type="number"
+                value={valorAposta}
+                onChange={(e) => handleValorApostaChange(e.target.value)}
+                />
+            </Form.Group>
+          </>
+          }
+         
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleModalClose}>

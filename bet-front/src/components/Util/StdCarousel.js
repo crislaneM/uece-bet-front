@@ -14,6 +14,7 @@ const StdCarousel = () => {
     const fetchEventos = async () => {
       try {
         const response = await axios.get('http://127.0.0.1:5000/evento/todos_eventos');
+        console.log(response.data)
         setEventos(response.data);
       } catch (error) {
         console.error('Erro ao buscar eventos:', error);
@@ -24,10 +25,11 @@ const StdCarousel = () => {
   }, []);
 
   const renderStdCards = () => {
+    const filteredEventos = eventos.filter(evento => evento.evento_status === true);
     const stdCards = [];
 
-    for (let i = 0; i < eventos.length; i += 3) {
-      const stdCardGroup = eventos.slice(i, i + 3).map((evento, index) => (
+    for (let i = 0; i < filteredEventos.length; i += 3) {
+      const stdCardGroup = filteredEventos.slice(i, i + 3).map((evento, index) => (
         <StdCard key={index} evento={evento} />
       ));
 
