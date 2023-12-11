@@ -113,6 +113,7 @@ const CreateEvent = () => {
 
         // Feche o modal
         setShowConfirmationModal(false);
+        window.location.reload();
     };
 
   return (
